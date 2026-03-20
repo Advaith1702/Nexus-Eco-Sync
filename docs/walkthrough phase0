@@ -1,0 +1,80 @@
+# Nexus (Eco-Sync) — Phase 1 Scaffolding Walkthrough
+
+## What Was Built
+
+### Client (`client/`)
+- **Next.js 15** app with **App Router**, **Tailwind CSS**, and **ESLint**
+- `socket.io-client` installed
+- **5 placeholder components**: [CreateRoom](file:///c:/Users/Advaith/Documents/Nexus/client/src/components/CreateRoom.jsx#3-14), [JoinRoom](file:///c:/Users/Advaith/Documents/Nexus/client/src/components/JoinRoom.jsx#3-14), [Scratchpad](file:///c:/Users/Advaith/Documents/Nexus/client/src/components/Scratchpad.jsx#3-14), [DeviceMonitor](file:///c:/Users/Advaith/Documents/Nexus/client/src/components/DeviceMonitor.jsx#3-15), [DeviceCard](file:///c:/Users/Advaith/Documents/Nexus/client/src/components/DeviceCard.jsx#3-14)
+- **2 hooks**: [useSocket](file:///c:/Users/Advaith/Documents/Nexus/client/src/hooks/useSocket.js#6-31) (connection lifecycle), [useBattery](file:///c:/Users/Advaith/Documents/Nexus/client/src/hooks/useBattery.js#5-47) (Web Battery API)
+- **Lib**: [socket.js](file:///c:/Users/Advaith/Documents/Nexus/client/src/lib/socket.js) (singleton Socket.io client)
+- **Dynamic route**: `/room/[code]` composing Scratchpad + DeviceMonitor
+
+### Server (`server/`)
+- **Express + HTTP + Socket.io** server with CORS for `localhost:3000`
+- **ioredis**, **dotenv**, **cors** installed; **nodemon** for dev
+- [socket/events.js](file:///c:/Users/Advaith/Documents/Nexus/server/src/socket/events.js) — all event name constants
+- [socket/handlers.js](file:///c:/Users/Advaith/Documents/Nexus/server/src/socket/handlers.js) — stub handlers for every event
+- [redis/client.js](file:///c:/Users/Advaith/Documents/Nexus/server/src/redis/client.js) — ioredis singleton with retry
+- [redis/rooms.js](file:///c:/Users/Advaith/Documents/Nexus/server/src/redis/rooms.js) — room CRUD stubs with documented signatures
+- [.env](file:///c:/Users/Advaith/Documents/Nexus/server/.env) and [.env.example](file:///c:/Users/Advaith/Documents/Nexus/server/.env.example) with `PORT=3001` and `REDIS_URL`
+
+## Final Folder Tree
+
+```
+Nexus/
+├── client/
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── layout.js
+│   │   │   ├── page.js
+│   │   │   ├── globals.css
+│   │   │   └── room/[code]/page.js
+│   │   ├── components/
+│   │   │   ├── CreateRoom.jsx
+│   │   │   ├── JoinRoom.jsx
+│   │   │   ├── Scratchpad.jsx
+│   │   │   ├── DeviceMonitor.jsx
+│   │   │   └── DeviceCard.jsx
+│   │   ├── hooks/
+│   │   │   ├── useSocket.js
+│   │   │   └── useBattery.js
+│   │   └── lib/
+│   │       └── socket.js
+│   ├── package.json
+│   └── tailwind.config.js
+│
+└── server/
+    ├── src/
+    │   ├── index.js
+    │   ├── socket/
+    │   │   ├── events.js
+    │   │   └── handlers.js
+    │   └── redis/
+    │       ├── client.js
+    │       └── rooms.js
+    ├── .env / .env.example
+    └── package.json
+```
+
+## Verification
+
+| Check | Result |
+|---|---|
+| Server starts on `:3001` | ✅ `[nexus] server listening on http://localhost:3001` |
+| All planned files exist | ✅ 36 files confirmed |
+| No stray root-level artifacts | ✅ Cleaned |
+
+## How to Run
+
+```bash
+# Terminal 1 — Server
+cd server && npm run dev
+
+# Terminal 2 — Client
+cd client && npm run dev
+```
+
+## Next Step
+
+**Phase 2**: Implement the Redis room logic (CRUD with 30-min TTL, Socket.io event handlers for create/join/leave).
